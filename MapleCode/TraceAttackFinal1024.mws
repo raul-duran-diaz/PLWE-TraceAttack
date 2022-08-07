@@ -1,0 +1,157 @@
+{VERSION 6 0 "IBM INTEL NT" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Comment" 2 18 "" 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 }
+{CSTYLE "2D Input" 2 19 "" 0 1 255 0 0 1 0 0 0 0 0 0 0 0 0 1 }{CSTYLE 
+"2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }{PSTYLE "Normal
+" -1 0 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 1 1 1 }1 
+1 0 0 0 0 1 0 1 0 2 2 0 1 }{PSTYLE "Maple Output" -1 11 1 {CSTYLE "" 
+-1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 1 1 1 }3 3 0 0 0 0 1 0 1 0 2 
+2 0 1 }{PSTYLE "Maple Output" -1 12 1 {CSTYLE "" -1 -1 "Times" 1 12 0 
+0 0 1 2 2 2 2 2 2 1 1 1 1 }1 3 0 0 0 0 1 0 1 0 2 2 0 1 }{PSTYLE "Autho
+r" -1 19 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 1 1 1 }
+3 1 0 0 8 8 1 0 1 0 2 2 0 1 }{PSTYLE "Heading 1" -1 256 1 {CSTYLE "" 
+-1 -1 "Times" 1 18 0 0 0 1 2 1 2 2 2 2 1 1 1 1 }3 1 0 0 8 4 1 0 1 0 2 
+2 0 1 }}
+{SECT 0 {EXCHG {PARA 0 "" 0 "" {TEXT -1 0 "" }}{PARA 256 "" 0 "" 
+{TEXT -1 45 "Trace-Based Cryptoanalysis of Cyclotomic PLWE" }}{PARA 
+256 "" 0 "" {TEXT -1 22 "for the Non-Split Case" }}{PARA 19 "" 0 "" 
+{TEXT -1 58 "I. Blanco Chac\363n, B. Barbero Lucas, R. Dur\341n D\355a
+z, R. Njah" }}{PARA 0 "" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 0 "
+" {MPLTEXT 1 0 8 "restart:" }}}{EXCHG {PARA 0 "" 0 "" {TEXT -1 0 "" }}
+{PARA 0 "" 0 "" {TEXT -1 59 "First, we have the definition of all the \+
+needed procedures:" }}{PARA 0 "" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 
+"> " 0 "" {MPLTEXT 1 0 29 "#############################" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 131 "MuestUniRq:=proc(p,n,q)\nlocal s, \+
+i:\n\ns:=[]:\nfor i from 1 to numtheory[phi](p^n) do\n s:=[op(s),rollq
+()]:\nend do:\nreturn s:\nend proc:" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 29 "#############################" }}}{EXCHG {PARA 0 "> \+
+" 0 "" {MPLTEXT 1 0 156 "MuestGaussRq:=proc(p,n,q,sig)\nlocal s, v, m:
+\nm:=numtheory[phi](p^n):\n\nv := Statistics[Sample](X,m):\ns := [seq(
+floor(v[i]+0.5),i=1..m)]:\n\nreturn s:\nend proc:" }}}{EXCHG {PARA 0 "
+> " 0 "" {MPLTEXT 1 0 29 "#############################" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 394 "MuestUniRq0:=proc(p,n,q,rho)\nloca
+l s, i, eqs, j, sol, vx, N,s0:\n\neqs:=\{\}:\nN:=p^(n-1)*(p-1):\nfor j
+ from 1 to p^(n-2)-1 do\n eqs:= eqs union \{add(x[v*p^(n-2)+j]*rho^v,v
+=0..p*(p-1)-1) mod q\}:\nend do:\nsol:=solve(eqs,\{seq(x[i],i=1..p^(n-
+2)-1)\}) mod q:\n\ns0:=\{x[0]=rollq(),seq(x[i]=rollq(),i=p^(n-2)..N-1)
+\}:\ns0:=s0 union subs(s0,sol) mod q:\nvx:=subs(s0,[seq(x[i],i=0..N-1)
+]) mod q:\nreturn vx:\nend proc:" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 29 "#############################" }}}{EXCHG {PARA 0 "> \+
+" 0 "" {MPLTEXT 1 0 156 "MuestUniRq0Rq:=proc(p,n,q,rho,M)\nlocal C, i:
+\nC:=[]:\nfor i from 1 to M do\n C:=[op(C),[MuestUniRq0(p,n,q,rho),Mue
+stUniRq(p,n,q)]]:\nend do:\nreturn C:\nend proc:" }}}{EXCHG {PARA 0 ">
+ " 0 "" {MPLTEXT 1 0 29 "#############################" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 142 "Suma:=proc(a,b)\n\nif nops(a) <> n
+ops(b) then\n print(\"Error in sum\"):\n return a:\nend if:\n\nreturn \+
+[seq(a[i]+b[i] mod q,i=1..nops(a))]:\n\nend proc:" }}}{EXCHG {PARA 0 "
+> " 0 "" {MPLTEXT 1 0 29 "#############################" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 218 "Multip:=proc(a,s,q,Phi)\nlocal p1,
+ p2, pp, N:\n\nN:=degree(Phi,x):\np1 := add(a[i]*x^(i-1),i=1..nops(a))
+:\np2 := add(s[i]*x^(i-1),i=1..nops(s)):\npp := Rem(p1*p2,Phi,x) mod q
+:\nreturn [seq(coeff(pp,x,i),i=0..N-1)]:\n\nend proc:" }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 29 "#############################" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 307 "MuestPLWERq0Rq:=proc(p,n,q,
+Phi,rho,sig,M)\nlocal s, C, i, a, b, err:\n\ns := MuestUniRq(p,n,q):\n
+# print(s):\nC:=[]:\nfor i from 1 to M do\n a := MuestUniRq0(p,n,q,rho
+):\n b := Multip(a,s,q,Phi):\n err := MuestGaussRq(p,n,q,sig):\n b := \+
+Suma(b,err):\n # print(err mod q):\n C:=[op(C),[a,b]]:\nend do:\nretur
+n C:\nend proc:" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 29 "########
+#####################" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 239 "C
+omputeSigma2:=proc(p,q,rho,sig)\nlocal Sigma1, n1, n2:\n\n Sigma1 := \+
+\{\}:\n for n1 from -2*sig to 2*sig do\n  for n2 from -2*sig to 2*sig \+
+do\n   Sigma1 := Sigma1 union \{p^(n-2)*(n1+n2*rho) mod q\}:\n  end do
+:\n end do:\n   \n return Sigma1:\nend proc:" }}}{PARA 12 "" 1 "" 
+{TEXT 2 0 "" }{TEXT 19 0 "" }{TEXT 20 0 "" }}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 29 "#######
+######################" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 95 "E
+valEnAlfa:=proc(s,p,n,q,rho)\n return add(s[v*p^(n-2)+1]*rho^v,v=0..p*
+(p-1)-1) mod q:\nend proc:" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 
+29 "#############################" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 87 "TrazaEnAlfa:=proc(s,p,n,q,rho)\n return p^(n-2)*EvalE
+nAlfa(s,p,n,q,rho) mod q:\nend proc:" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 29 "#############################" }}}{EXCHG {PARA 0 "> \+
+" 0 "" {MPLTEXT 1 0 331 "Algorithm2:=proc(mue,p,n,q,rho,Sigma1)\nlocal
+ G, f, g, flag:\nG:=\{\}:\nfor g from 0 to q-1 do\n flag:=1:\n for f i
+n mue do\n  if \{TrazaEnAlfa(f[2],p,n,q,rho) - EvalEnAlfa(f[1],p,n,q,r
+ho)*g mod q\} intersect Sigma1 = \{\} then\n   flag:=0:\n   break:\n  \+
+end if:\n end do:\n if flag = 1 then\n  G := G union \{g\}:\n end if:
+\nend do:\nreturn G:\nend proc:" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 
+1 0 29 "#############################" }}}{EXCHG {PARA 0 "" 0 "" 
+{TEXT -1 0 "" }}{PARA 0 "" 0 "" {TEXT -1 63 "Here we go with the \"mai
+n\" part. First we set parameter values:" }}{PARA 0 "" 0 "" {TEXT -1 
+0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}{EXCHG {PARA 0 "
+> " 0 "" {MPLTEXT 1 0 6 "n:=11:" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 
+1 0 49 "p:=2: # Only p:=2 is possible for the time being." }}}{EXCHG 
+{PARA 0 "> " 0 "" {MPLTEXT 1 0 7 "m:=p^n:" }}}{EXCHG {PARA 0 "> " 0 "
+" {MPLTEXT 1 0 5 "A:=2:" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 26 "
+sig:=8: # Value for sigma." }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 
+0 "" }}}{EXCHG {PARA 0 "" 0 "" {TEXT -1 0 "" }}{PARA 0 "" 0 "" {TEXT 
+-1 25 "Computation of the prime " }{XPPEDIT 18 0 "q;" "6#%\"qG" }
+{TEXT -1 1 "." }}{PARA 0 "" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 
+0 "" {MPLTEXT 1 0 0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 167 "q
+:=1:\nu:=10000: # Set u to the desired value: the larger the u, the la
+rger the q.\nwhile not isprime(q) do\n u:=u+1:\n if gcd(u,p) = 1 then
+\n  q:=1+u*p^A:\n end if:\nend do:" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 47 "q; # Prime satisfying the necessary conditions:" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6#\"&8+%" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 32 "Phi:=numtheory[cyclotomic](m,x);" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6#>%$PhiG,&*$)%\"xG\"%C5\"\"\"F*F*F*" }}}{EXCHG {PARA 0 "
+> " 0 "" {MPLTEXT 1 0 21 "N:=numtheory[phi](m):" }}}{EXCHG {PARA 0 "" 
+0 "" {TEXT -1 0 "" }}{PARA 0 "" 0 "" {TEXT -1 91 "Random variables: \"
+rollq\" for the uniform sampler; and X for the discrete Gaussian sampl
+er." }}{PARA 0 "" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 22 "rollq := rand(0..q-1):" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 58 "X := St
+atistics[RandomVariable](Normal(0,sig/sqrt(2*Pi))):" }}}{EXCHG {PARA 
+0 "" 0 "" {TEXT -1 0 "" }}{PARA 0 "" 0 "" {TEXT -1 11 " We select " }
+{XPPEDIT 18 0 "rho;" "6#%$rhoG" }{TEXT -1 32 " from the first of the r
+oots of " }{XPPEDIT 18 0 "Phi;" "6#%$PhiG" }{TEXT -1 1 ":" }}{PARA 0 "
+" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 41 "Fact
+or(Phi) mod q; rho:=-op(op(%)[1])[2];" }}{PARA 11 "" 1 "" {XPPMATH 20 
+"6#*&,&*$)%\"xG\"$7&\"\"\"F)\"&\"[FF)F),&F%F)\"&KD\"F)F)" }}{PARA 11 "
+" 1 "" {XPPMATH 20 "6#>%$rhoG!&\"[F" }}}{EXCHG {PARA 0 "" 0 "" {TEXT 
+-1 0 "" }}{PARA 0 "" 0 "" {TEXT -1 15 "We compute the " }{XPPEDIT 18 
+0 "Sigma;" "6#%&SigmaG" }{TEXT -1 29 " for the selected parameters:" }
+}{PARA 0 "" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 
+0 35 "Sigma1:=ComputeSigma2(p,q,rho,sig):" }}}{EXCHG {PARA 0 "> " 0 "
+" {MPLTEXT 1 0 13 "nops(Sigma1);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#\"
+%*3\"" }}}{EXCHG {PARA 0 "" 0 "" {TEXT -1 0 "" }}{PARA 0 "" 0 "" 
+{TEXT -1 61 "Selection of number of tests; and number of samples per t
+est." }}{PARA 0 "" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 17 "ntests:=5: M:=10:" }}}{EXCHG {PARA 0 "" 0 "" {TEXT 
+-1 0 "" }}{PARA 0 "" 0 "" {TEXT -1 24 "In this loop, we repeat " }
+{XPPEDIT 18 0 "ntests;" "6#%'ntestsG" }{TEXT -1 34 " times the generat
+ion of a set of " }{XPPEDIT 18 0 "M;" "6#%\"MG" }{TEXT -1 30 " samples
+ from the PLWE oracle." }}{PARA 0 "" 0 "" {TEXT -1 99 "We execute Algo
+rithm2 over the set and check whether or not the Algorithm returns the
+ right answer." }}{PARA 0 "" 0 "" {TEXT -1 22 "In this case, the set \+
+" }{XPPEDIT 18 0 "G;" "6#%\"GG" }{TEXT -1 71 " must contain one and on
+ly one element for the Algorithm to be correct." }}{PARA 0 "" 0 "" 
+{TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 201 "ff:=0:\nfo
+r i from 1 to ntests do\n mue:=MuestPLWERq0Rq(p,n,q,Phi,rho,sig,M):\n \+
+G:=Algorithm2(mue,p,n,q,rho,Sigma1):\n if nops(G) <> 1 then\n  ff:=ff+
+1:\n end if:\n print(i,ff):\nend do:\nprint(\"Failures\", ff):" }}
+{PARA 11 "" 1 "" {XPPMATH 20 "6$\"\"\"\"\"!" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6$\"\"#\"\"!" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$\"\"$\"\"
+!" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$\"\"%\"\"!" }}{PARA 11 "" 1 "" 
+{XPPMATH 20 "6$\"\"&\"\"!" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$Q)Failure
+s6\"\"\"!" }}}{EXCHG {PARA 0 "" 0 "" {TEXT -1 0 "" }}{PARA 0 "" 0 "" 
+{TEXT -1 28 "In the next loop, we repeat " }{XPPEDIT 18 0 "ntests;" "6
+#%'ntestsG" }{TEXT -1 34 " times the generation of a set of " }
+{XPPEDIT 18 0 "M;" "6#%\"MG" }{TEXT -1 33 " samples from the uniform o
+racle." }}{PARA 0 "" 0 "" {TEXT -1 99 "We execute Algorithm2 over the \+
+set and check whether or not the Algorithm returns the right answer." 
+}}{PARA 0 "" 0 "" {TEXT -1 22 "In this case, the set " }{XPPEDIT 18 0 
+"G;" "6#%\"GG" }{TEXT -1 47 " must be empty for the Algorithm to be co
+rrect." }}{PARA 0 "" 0 "" {TEXT -1 0 "" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 194 "ff:=0:\nfor i from 1 to ntests do\n mue2:=MuestUniRq
+0Rq(p,n,q,rho,M):\n G:=Algorithm2(mue2,p,n,q,rho,Sigma1):\n if nops(G)
+ <> 0 then\n  ff:=ff+1:\n end if:\n print(i,ff):\nend do:\nprint(\"Fai
+lures\", ff):" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$\"\"\"\"\"!" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6$\"\"#\"\"!" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6$\"\"$\"\"!" }}{PARA 11 "" 1 "" {XPPMATH 20 "6$\"\"%\"\"!" }}{PARA 
+11 "" 1 "" {XPPMATH 20 "6$\"\"&\"\"!" }}{PARA 11 "" 1 "" {XPPMATH 20 "
+6$Q)Failures6\"\"\"!" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}
+}}{MARK "0 0 0" 0 }{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 
+2 33 1 1 }
